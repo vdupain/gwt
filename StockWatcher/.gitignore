@@ -1,2 +1,6 @@
 /gwt-unitCache
 /WEB-INF/classes
+.classpath
+.project
+.settings
+
