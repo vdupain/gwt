@@ -19,6 +19,8 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.sample.stockwatcher.client.StockData;
+import com.google.gwt.sample.stockwatcher.client.event.AddStockEvent;
+import com.google.gwt.sample.stockwatcher.client.event.DeleteStockEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -28,6 +30,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -49,6 +52,9 @@ public class StockWatcherViewImpl extends Composite implements StockWatcherView 
 
     @UiField
     Label errorMsgLabel;
+
+    @UiField
+    RichTextArea console;
 
     private static final int REFRESH_INTERVAL = 5000; // ms
 
@@ -94,13 +100,13 @@ public class StockWatcherViewImpl extends Composite implements StockWatcherView 
 
     @UiHandler("addStockButton")
     void onAddStockButtonClick(ClickEvent event) {
-        addStock();
+        this.presenter.onAddStockButtonClicked(new AddStockEvent(newSymbolTextBox.getText().toUpperCase().trim()));
     }
 
     @UiHandler("newSymbolTextBox")
     void onNewSymbolTextBoxKeyPress(KeyPressEvent event) {
         if (event.getCharCode() == KeyCodes.KEY_ENTER) {
-            addStock();
+            this.presenter.onAddStockButtonClicked(new AddStockEvent(newSymbolTextBox.getText().toUpperCase().trim()));
         }
     }
 
@@ -108,7 +114,7 @@ public class StockWatcherViewImpl extends Composite implements StockWatcherView 
      * Add stock to FlexTable. Executed when the user clicks the addStockButton
      * or presses enter in the newSymbolTextBox.
      */
-    private void addStock() {
+    public void addStock() {
         final String symbol = newSymbolTextBox.getText().toUpperCase().trim();
         newSymbolTextBox.setFocus(true);
 
@@ -140,15 +146,20 @@ public class StockWatcherViewImpl extends Composite implements StockWatcherView 
         removeStockButton.addStyleDependentName("remove");
         removeStockButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                int removedIndex = stocks.indexOf(symbol);
-                stocks.remove(removedIndex);
-                stocksFlexTable.removeRow(removedIndex + 1);
+                presenter.onDeleteStockButtonClicked(new DeleteStockEvent(symbol));
             }
         });
         stocksFlexTable.setWidget(row, 3, removeStockButton);
 
         // Get the stock price.
         refreshWatchList();
+    }
+
+    @Override
+    public void removeStock(String stockName) {
+        int removedIndex = stocks.indexOf(stockName);
+        stocks.remove(removedIndex);
+        stocksFlexTable.removeRow(removedIndex + 1);
     }
 
     /**
@@ -265,4 +276,18 @@ public class StockWatcherViewImpl extends Composite implements StockWatcherView 
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
+
+    @Override
+    public void logEvent(String message) {
+        this.console.setText(message);
+    }
+
+    public ArrayList<String> getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(ArrayList<String> stocks) {
+        this.stocks = stocks;
+    }
+
 }

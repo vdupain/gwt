@@ -13,5 +13,6 @@
   		<g:Button text="Add" ui:field="addStockButton"/>
   	</g:HorizontalPanel>
   	<g:Label ui:field="lastUpdatedLabel"/>
+  	<g:RichTextArea ui:field="console"/>
   </g:VerticalPanel>
 </ui:UiBinder> 

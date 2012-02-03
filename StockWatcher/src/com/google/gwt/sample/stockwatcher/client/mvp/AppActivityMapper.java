@@ -8,7 +8,7 @@ import com.google.gwt.sample.stockwatcher.client.activity.StockWatcherActivity;
 import com.google.gwt.sample.stockwatcher.client.place.StockWatcherPlace;
 
 public class AppActivityMapper implements ActivityMapper {
-    
+
     private ClientFactory clientFactory;
 
     public AppActivityMapper(ClientFactory clientFactory) {
@@ -18,7 +18,7 @@ public class AppActivityMapper implements ActivityMapper {
     @Override
     public Activity getActivity(Place place) {
         if (place instanceof StockWatcherPlace)
-               return new StockWatcherActivity((StockWatcherPlace) place, clientFactory);
+            return new StockWatcherActivity(clientFactory);
         return null;
     }
 

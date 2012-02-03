@@ -43,8 +43,6 @@ public class StockWatcherEntryPoint implements EntryPoint {
         RootPanel.get("stockList").add(appWidget);
         // Goes to the place represented on URL else default place
         historyHandler.handleCurrentHistory();
-
-        // RootPanel.get("stockList").add(new StockWatcherViewImpl());
     }
 
 }
