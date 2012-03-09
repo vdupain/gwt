@@ -24,12 +24,14 @@ import com.google.gwt.sample.stockwatcher.client.event.DeleteStockEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -55,6 +57,8 @@ public class StockWatcherViewImpl extends Composite implements StockWatcherView 
 
     @UiField
     RichTextArea console;
+    @UiField MenuItem helpMenuItem;
+    @UiField MenuItem aboutMenuItem;
 
     private static final int REFRESH_INTERVAL = 5000; // ms
 
@@ -79,6 +83,15 @@ public class StockWatcherViewImpl extends Composite implements StockWatcherView 
         };
         refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
         initWidget(uiBinder.createAndBindUi(this));
+        
+        
+        aboutMenuItem.setCommand(new Command() {
+            
+            @Override
+            public void execute() {
+                Window.alert("fuck...");
+            }
+        });
     }
 
     private void initFlexTable() {

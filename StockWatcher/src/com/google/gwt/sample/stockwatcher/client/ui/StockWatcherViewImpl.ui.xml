@@ -7,6 +7,13 @@
   </ui:style>
   <g:VerticalPanel>
   	<g:Label ui:field="errorMsgLabel"/>
+  	<g:MenuBar>
+  		<g:MenuItem text="Help" ui:field="helpMenuItem">
+  			<g:MenuBar vertical="true">
+  				<g:MenuItem text="about" ui:field="aboutMenuItem"/>
+  			</g:MenuBar>
+  		</g:MenuItem>
+  	</g:MenuBar>
   	<g:FlexTable ui:field="stocksFlexTable"/>
   	<g:HorizontalPanel>
   		<g:TextBox ui:field="newSymbolTextBox" focus="true"/>
