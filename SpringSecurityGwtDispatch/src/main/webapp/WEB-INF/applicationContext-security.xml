@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+  <global-method-security pre-post-annotations="enabled" />
+
+  <http use-expressions="true">
+
+    <intercept-url pattern="/SSGD/dispatch/fr.generali.gwt.dispatch.shared.ResetCounter" access="hasRole('ROLE_RESET')" />
+    <intercept-url pattern="/SSGD/dispatch/**IncrementCounter" access="hasRole('ROLE_INCREMENT')" />
+    <intercept-url pattern="/SSGD/dispatch/**DecrementCounter**" access="hasRole('ROLE_DECREMENT')" />
+    <intercept-url pattern="/SSGD/**" access="isAuthenticated()" />
+    <intercept-url pattern="/SSGD/dispatch/" access="denyAll" />
+    <intercept-url pattern="/**" access="permitAll" />
+
+    <form-login />
+    <logout />
+
+  </http>
+
+  <authentication-manager>
+    <authentication-provider>
+      <user-service>
+        <user name="abdennebi" password="password" authorities="ROLE_INCREMENT, ROLE_DECREMENT, ROLE_RESET" />
+        <user name="bostoen" password="password" authorities="ROLE_INCREMENT, ROLE_DECREMENT" />
+        <user name="holmes" password="password" authorities="ROLE_RESET" />
+        <user name="renou" password="password" authorities="" />
+      </user-service>
+    </authentication-provider>
+  </authentication-manager>
+
+</beans:beans>

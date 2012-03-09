@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+											http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+											http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="fr.generali.gwt.dispatch.server" />
+
+	<!-- 
+	
+		handlerRegistry par défaut mais qui ne permet pas d'injecter automatiquement les handlers 
+	
+	<bean id="handlerRegistry" class="net.customware.gwt.dispatch.server.DefaultActionHandlerRegistry">
+		<property name="actionHandlers" >
+			<list>
+				<bean class="fr.generali.gwt.dispatch.server.handler.IncrementCounterHandler" />
+				<bean	class="fr.generali.gwt.dispatch.server.handler.DecrementCounterHandler" />
+				<bean class="fr.generali.gwt.dispatch.server.handler.ResetCounterHandler" />
+			</list>
+		</property>
+	</bean>
+ 	-->
+	 
+	<!-- Bean injecté dans le servlet du dispatcher déclarée dans web.xml -->	
+	<bean id="dispatch" class="net.customware.gwt.dispatch.server.spring.SpringDispatch">
+		<constructor-arg ref="handlerRegistry"/>
+	</bean>
+	
+	<bean id="handlerRegistry" class="fr.generali.gwt.dispatch.server.fwk.GeneraliActionHandlerRegistry"/>
+	
+	<bean id="sessionValidator" class="fr.generali.gwt.dispatch.server.fwk.DefaultSecureSessionValidator"/>
+
+</beans>

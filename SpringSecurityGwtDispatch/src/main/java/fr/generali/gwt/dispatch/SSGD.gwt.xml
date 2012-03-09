@@ -1,0 +1,16 @@
+<!DOCTYPE module PUBLIC "//gwt-module/" "http://google-web-toolkit.googlecode.com/svn/tags/2.4.0/distro-source/core/src/gwt-module.dtd">
+
+<module rename-to="SSGD">
+
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<source path="client" />
+	<source path="shared" />
+
+	<!-- GWT dispatch -->
+	<inherits name='net.customware.gwt.dispatch.Dispatch' />
+
+	<entry-point class='fr.generali.gwt.dispatch.client.SSGDEntryPoint' />
+
+
+</module>
