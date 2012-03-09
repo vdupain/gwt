@@ -3,6 +3,7 @@
 .classpath
 .project
 .settings
+target
 .gwt
 .DS_Store
 gwt-unitCache
