@@ -1,0 +1,7 @@
+<persistence>
+  <persistence-unit name="sample-gwt" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>fr.generali.ccj.sample.gwt.server.domain.Foo</class>
+    <exclude-unlisted-classes />
+  </persistence-unit>
+</persistence>
