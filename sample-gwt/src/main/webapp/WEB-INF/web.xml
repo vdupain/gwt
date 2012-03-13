@@ -10,6 +10,7 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>
       classpath*:/META-INF/spring/applicationContext.xml
+      classpath*:/META-INF/spring/applicationContext-security.xml
     </param-value>
   </context-param>
 
@@ -27,28 +28,27 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
-  <!-- RPC Servlet -->
-
-  <!-- RequestFactory Servlet -->
-  <servlet>
-    <servlet-name>requestFactoryServlet</servlet-name>
-    <servlet-class>com.google.web.bindery.requestfactory.server.RequestFactoryServlet</servlet-class>
-    <!-- <servlet-class>fr.generali.ccj.sample.gwt.server.rf.SpringRequestFactoryServlet</servlet-class> -->
-  </servlet>
-
   <servlet-mapping>
     <servlet-name>dispatch</servlet-name>
     <url-pattern>/Sample/dispatch</url-pattern>
   </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>requestFactoryServlet</servlet-name>
-    <url-pattern>/gwtRequest</url-pattern>
-  </servlet-mapping>
+  <!-- Spring Security -->
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
 
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Sample.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
 </web-app>

@@ -27,13 +27,14 @@ import fr.generali.ccj.sample.gwt.shared.dto.FooDto;
 public class Sample implements EntryPoint {
 
     private final DispatchAsync dispatch = new StandardDispatchAsync(new DefaultExceptionHandler());
+    //private final DispatchAsync dispatch = new GeneraliSecureDispatchAsync(new DefaultExceptionHandler(), new DefaultDispatchUrlBuilder(), new CookieSecureSessionAccessor("JSESSIONID"));
 
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
         VerticalPanel all = new VerticalPanel();
-        all.add(new HTML("<h1>GWT-dispatch/RequestFactory demo</h1>"));
+        all.add(new HTML("<h1>GWT Demo</h1>"));
         final Label result1Label = new Label("No results yet");
         final Label result11Label = new Label("No results yet");
         final Label result12Label = new Label("No results yet");

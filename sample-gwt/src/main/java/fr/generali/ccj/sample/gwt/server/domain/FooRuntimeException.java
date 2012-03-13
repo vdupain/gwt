@@ -5,6 +5,10 @@ public class FooRuntimeException extends RuntimeException {
     public FooRuntimeException() {
     }
 
+    public FooRuntimeException(String message) {
+        super(message);
+    }
+
     public FooRuntimeException(Throwable throwable) {
         super(throwable);
     }
