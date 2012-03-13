@@ -7,7 +7,6 @@ import net.customware.gwt.dispatch.shared.Action;
 import net.customware.gwt.dispatch.shared.Result;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 
 public class DispatchUrlBuilder {
 
