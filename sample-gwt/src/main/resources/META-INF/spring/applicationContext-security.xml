@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+  <global-method-security pre-post-annotations="enabled" jsr250-annotations="enabled"
+    secured-annotations="enabled" />
+    
+  <http use-expressions="true">
+    <intercept-url pattern="/Sample/dispatch/**FooAction**" access="isAuthenticated() and hasRole('ROLE_FOO')" />
+    <intercept-url pattern="/Sample/dispatch/**ErrorAction**" access="isAuthenticated() and hasRole('ROLE_ERROR')" />
+    <intercept-url pattern="/Sample.html" access="isAuthenticated()" />
+    <intercept-url pattern="/index.html" access="permitAll" />
+    <form-login />
+    <logout />
+  </http>
+
+
+  <authentication-manager>
+    <authentication-provider>
+      <user-service>
+        <user name="admin" password="admin" authorities="ROLE_FOO, ROLE_ERROR" />
+        <user name="user1" password="user1" authorities="ROLE_ERROR" />
+        <user name="guest" password="guest" authorities="" />
+      </user-service>
+    </authentication-provider>
+  </authentication-manager>
+
+</beans:beans>
