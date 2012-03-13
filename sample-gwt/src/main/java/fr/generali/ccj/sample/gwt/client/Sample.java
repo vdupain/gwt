@@ -2,7 +2,7 @@ package fr.generali.ccj.sample.gwt.client;
 
 import net.customware.gwt.dispatch.client.DefaultExceptionHandler;
 import net.customware.gwt.dispatch.client.DispatchAsync;
-import net.customware.gwt.dispatch.client.standard.StandardDispatchAsync;
+import net.customware.gwt.dispatch.client.secure.CookieSecureSessionAccessor;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import fr.generali.ccj.sample.gwt.client.dispatch.DispatchUrlBuilder;
+import fr.generali.ccj.sample.gwt.client.dispatch.MySecureDispatchAsync;
 import fr.generali.ccj.sample.gwt.shared.dispatch.ErrorAction;
 import fr.generali.ccj.sample.gwt.shared.dispatch.FooAction;
 import fr.generali.ccj.sample.gwt.shared.dispatch.FooResult;
@@ -26,8 +28,9 @@ import fr.generali.ccj.sample.gwt.shared.dto.FooDto;
  */
 public class Sample implements EntryPoint {
 
-    private final DispatchAsync dispatch = new StandardDispatchAsync(new DefaultExceptionHandler());
-    //private final DispatchAsync dispatch = new GeneraliSecureDispatchAsync(new DefaultExceptionHandler(), new DefaultDispatchUrlBuilder(), new CookieSecureSessionAccessor("JSESSIONID"));
+    private final DispatchAsync dispatch = new MySecureDispatchAsync(new DefaultExceptionHandler(),
+                    new DispatchUrlBuilder(), new CookieSecureSessionAccessor("JSESSIONID"));
+
 
     /**
      * This is the entry point method.

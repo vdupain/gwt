@@ -20,21 +20,10 @@
 
   <!-- gwt-dispatch -->
   <bean id="dispatch" class="net.customware.gwt.dispatch.server.spring.SpringDispatch">
-    <!-- <constructor-arg index="0" ref="registry" /> -->
-        <constructor-arg ref="handlerRegistry"/>    
+    <constructor-arg ref="handlerRegistry" />
   </bean>
 
-  <bean id="handlerRegistry" class="fr.generali.ccj.sample.gwt.server.dispatch.ActionHandlerRegistry"/>
-
-<!-- 
-  <bean id="registry" class="net.customware.gwt.dispatch.server.DefaultActionHandlerRegistry">
-    <property name="actionHandlers">
-      <list>
-        <bean class="fr.generali.ccj.sample.gwt.server.dispatch.FooActionHandler" />
-        <bean class="fr.generali.ccj.sample.gwt.server.dispatch.ErrorActionHandler" />
-      </list>
-    </property>
-  </bean>
- -->  
+  <bean id="handlerRegistry" class="fr.generali.ccj.sample.gwt.server.dispatch.ActionHandlerRegistry" />
+  <bean id="sessionValidator" class="fr.generali.ccj.sample.gwt.server.dispatch.DefaultSecureSessionValidator" />
 
 </beans>

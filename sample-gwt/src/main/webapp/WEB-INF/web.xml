@@ -5,7 +5,6 @@
 
 <web-app>
 
-
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
@@ -24,13 +23,13 @@
 
   <servlet>
     <servlet-name>dispatch</servlet-name>
-    <servlet-class>net.customware.gwt.dispatch.server.spring.SpringStandardDispatchServlet</servlet-class>
+    <servlet-class>net.customware.gwt.dispatch.server.spring.SpringSecureDispatchServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>dispatch</servlet-name>
-    <url-pattern>/Sample/dispatch</url-pattern>
+    <url-pattern>/Sample/dispatch/*</url-pattern>
   </servlet-mapping>
 
   <!-- Spring Security -->

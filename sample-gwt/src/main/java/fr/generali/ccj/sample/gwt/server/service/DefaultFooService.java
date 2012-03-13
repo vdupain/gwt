@@ -3,6 +3,7 @@ package fr.generali.ccj.sample.gwt.server.service;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +17,7 @@ import fr.generali.ccj.sample.gwt.server.domain.FooRuntimeException;
 
 @Service
 public class DefaultFooService implements IFooService {
-   
+
     @PersistenceContext
     private EntityManager em;
 
@@ -57,13 +58,14 @@ public class DefaultFooService implements IFooService {
         }
     }
 
-//    @RolesAllowed("ROLE_ERROR")
+    @RolesAllowed("ROLE_ERROR")
     public void methodThatThrowsUncheckedException() {
         System.out.println("DefaultFooService.methodThatThrowsUncheckedException()");
         throw new FooRuntimeException("Test remontée d'exception unchecked");
     }
 
-//    @RolesAllowed("ROLE_ERROR")
+    // @RolesAllowed("ROLE_ERROR")
+    @DenyAll
     public void methodThatThrowsCheckedException() throws FooException {
         System.out.println("DefaultFooService.methodThatThrowsCheckedException()");
         throw new FooException(new FileNotFoundException("Test remontée d'exception checked"));

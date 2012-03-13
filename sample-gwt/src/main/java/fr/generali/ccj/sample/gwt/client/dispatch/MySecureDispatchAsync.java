@@ -13,7 +13,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
-public class GeneraliSecureDispatchAsync extends AbstractDispatchAsync {
+public class MySecureDispatchAsync extends AbstractDispatchAsync {
 
     private static final SecureDispatchServiceAsync realService = GWT.create(SecureDispatchService.class);
 
@@ -21,7 +21,7 @@ public class GeneraliSecureDispatchAsync extends AbstractDispatchAsync {
 
     private final DispatchUrlBuilder urlBuilder;
 
-    public GeneraliSecureDispatchAsync(ExceptionHandler exceptionHandler, DispatchUrlBuilder urlBuilder,
+    public MySecureDispatchAsync(ExceptionHandler exceptionHandler, DispatchUrlBuilder urlBuilder,
                     SecureSessionAccessor secureSessionAccessor) {
         super(exceptionHandler);
         this.secureSessionAccessor = secureSessionAccessor;
@@ -29,22 +29,16 @@ public class GeneraliSecureDispatchAsync extends AbstractDispatchAsync {
     }
 
     public <A extends Action<R>, R extends Result> void execute(final A action, final AsyncCallback<R> callback) {
-
         String sessionId = secureSessionAccessor.getSessionId();
-
         ((ServiceDefTarget ) realService).setServiceEntryPoint(urlBuilder.buildURL(action));
-
         realService.execute(sessionId, action, new AsyncCallback<Result>() {
 
             public void onFailure(Throwable caught) {
-                GeneraliSecureDispatchAsync.this.onFailure(action, caught, callback);
-
+                MySecureDispatchAsync.this.onFailure(action, caught, callback);
             }
 
-            @SuppressWarnings("unchecked")
             public void onSuccess(Result result) {
-                GeneraliSecureDispatchAsync.this.onSuccess(action, (R ) result, callback);
-
+                MySecureDispatchAsync.this.onSuccess(action, (R ) result, callback);
             }
         });
     }

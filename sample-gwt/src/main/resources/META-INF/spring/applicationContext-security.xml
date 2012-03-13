@@ -7,7 +7,7 @@
 
   <global-method-security pre-post-annotations="enabled" jsr250-annotations="enabled"
     secured-annotations="enabled" />
-    
+
   <http use-expressions="true">
     <intercept-url pattern="/Sample/dispatch/**FooAction**" access="isAuthenticated() and hasRole('ROLE_FOO')" />
     <intercept-url pattern="/Sample/dispatch/**ErrorAction**" access="isAuthenticated() and hasRole('ROLE_ERROR')" />
