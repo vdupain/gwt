@@ -4,10 +4,10 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.annotation.security.DenyAll;
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -38,7 +38,7 @@ public class DefaultFooService implements IFooService {
         }
     }
 
-    @RolesAllowed("ROLE_FOO")
+    @Secured("ROLE_FOO")
     public Foo persist(Foo foo) {
         Assert.notNull(foo);
         try {
@@ -58,7 +58,7 @@ public class DefaultFooService implements IFooService {
         }
     }
 
-    @RolesAllowed("ROLE_ERROR")
+    @Secured("ROLE_FOO")
     public void methodThatThrowsUncheckedException() {
         System.out.println("DefaultFooService.methodThatThrowsUncheckedException()");
         throw new FooRuntimeException("Test remontée d'exception unchecked");

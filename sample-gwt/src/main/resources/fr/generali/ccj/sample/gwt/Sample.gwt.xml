@@ -18,6 +18,9 @@
   <!-- GWT dispatch -->
   <inherits name='net.customware.gwt.dispatch.Dispatch' />
   
+  <!-- Gin -->
+  <inherits name="com.google.gwt.inject.Inject"/>
+  
   <!-- Specify the app entry point class. -->
   <entry-point class='fr.generali.ccj.sample.gwt.client.Sample' />
 
