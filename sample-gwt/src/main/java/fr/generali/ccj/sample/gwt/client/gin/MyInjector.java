@@ -7,5 +7,5 @@ import fr.generali.ccj.sample.gwt.client.MyMainPanel;
 
 @GinModules(MyClientModule.class)
 public interface MyInjector extends Ginjector {
-    MyMainPanel getMainPanel();    
+    MyMainPanel getMainPanel();
 }

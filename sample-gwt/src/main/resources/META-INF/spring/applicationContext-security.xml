@@ -9,10 +9,12 @@
     secured-annotations="enabled" />
 
   <http use-expressions="true">
-    <intercept-url pattern="/Sample/dispatch/**FooAction**" access="isAuthenticated() and hasRole('ROLE_FOO')" />
+<!--     <intercept-url pattern="/Sample/dispatch/**FooAction**" access="isAuthenticated() and hasRole('ROLE_FOO')" />
     <intercept-url pattern="/Sample/dispatch/**ErrorAction**" access="isAuthenticated() and hasRole('ROLE_ERROR')" />
     <intercept-url pattern="/Sample.html" access="isAuthenticated()" />
     <intercept-url pattern="/index.html" access="permitAll" />
+ -->    
+    <intercept-url pattern="/Sample.html" access="permitAll" />
     <form-login />
     <logout />
   </http>
