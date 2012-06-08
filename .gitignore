@@ -1,5 +1,6 @@
-/gwt-unitCache
-/WEB-INF/classes
+gwt-unitCache
+WEB-INF/classes
+WEB-INF/deploy
 .classpath
 .project
 .settings
