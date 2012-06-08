@@ -1,0 +1,10 @@
+war/WEB-INF/classes
+war/WEB-INF/deploy
+bin
+gwt-unitCache
+.classpath
+.project
+.settings
+target
+.gwt
+.DS_Store
