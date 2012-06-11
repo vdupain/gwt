@@ -23,9 +23,17 @@
 
   <servlet>
     <servlet-name>dispatch</servlet-name>
+    <servlet-class>net.customware.gwt.dispatch.server.spring.SpringStandardDispatchServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+<!-- 
+  <servlet>
+    <servlet-name>dispatch</servlet-name>
     <servlet-class>net.customware.gwt.dispatch.server.spring.SpringSecureDispatchServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+-->  
 
   <servlet-mapping>
     <servlet-name>dispatch</servlet-name>

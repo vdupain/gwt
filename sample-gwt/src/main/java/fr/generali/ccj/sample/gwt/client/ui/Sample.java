@@ -13,7 +13,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
+import fr.generali.ccj.sample.gwt.client.gin.MyInjector;
+import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
+
 public class Sample implements EntryPoint {
+    private final MyInjector injector = GWT.create(MyInjector.class);
 
     interface Binder extends UiBinder<DockLayoutPanel, Sample> {
     }
@@ -62,7 +66,7 @@ public class Sample implements EntryPoint {
         // Listen for item selection, displaying the currently-selected item in
         // the detail area.
         countryList.setListener(new CountryList.Listener() {
-            public void onItemSelected(Geoname item) {
+            public void onItemSelected(GeonameDto item) {
                 countryDetail.setItem(item);
             }
         });

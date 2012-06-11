@@ -12,29 +12,49 @@
 
   <properties>
     <!-- Convenience property to set the GWT version -->
-    <gwtVersion>2.4.0</gwtVersion>
-    <!-- GWT needs at least java 1.5 -->
-    <webappDirectory>${project.build.directory}/webdev</webappDirectory>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <gwt.version>2.4.0</gwt.version>
+
+    <gwt.compile.style>OBF</gwt.compile.style>
+    <gwt.host.page>Sample.html</gwt.host.page>
+    <gwt.module.name>${gwt.module.profile}</gwt.module.name>
+    <gwt.webdev>${project.build.directory}/webdev</gwt.webdev>
+    <gwt.module.shortname>Sample</gwt.module.shortname>
 
     <version.frk.spring>3.1.0.RELEASE</version.frk.spring>
     <version.frk.spring-security>3.1.0.RELEASE</version.frk.spring-security>
     <version.frk.slf4j>1.6.1</version.frk.slf4j>
     <version.frk.logback>0.9.28</version.frk.logback>
+    <version.frk.elasticsearch>0.19.3</version.frk.elasticsearch>
 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <repositories>
+    <repository>
+      <!-- For Elastic Search -->
+      <id>Sonatype</id>
+      <name>Sonatype</name>
+      <url>http://oss.sonatype.org/content/repositories/releases/</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>${version.frk.elasticsearch}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
-      <version>${gwtVersion}</version>
+      <version>${gwt.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>${gwtVersion}</version>
+      <version>${gwt.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -347,7 +367,7 @@
 
   <build>
     <!-- Generate compiled stuff in the folder used for developing mode -->
-    <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+    <outputDirectory>${gwt.webdev}/WEB-INF/classes</outputDirectory>
 
     <resources>
       <resource>
@@ -378,8 +398,11 @@
         </executions>
         <!-- Plugin configuration. There are many available options, see gwt-maven-plugin documentation at codehaus.org -->
         <configuration>
-          <runTarget>index.html</runTarget>
-          <hostedWebapp>${webappDirectory}</hostedWebapp>
+          <!-- URL automatiquement ouverte par la commande gwt:run) -->
+          <runTarget>${gwt.host.page}</runTarget>
+          <!-- Localisation de la structure de l'application en dev-mode -->
+          <hostedWebapp>${gwt.webdev}</hostedWebapp>
+          <module>${gwt.module.name}</module>
         </configuration>
       </plugin>
 
@@ -388,17 +411,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.1.1</version>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>exploded</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <webappDirectory>${webappDirectory}</webappDirectory>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -409,7 +421,20 @@
           <target>1.5</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <configuration>
+              <goal>default-resources</goal>
+              <encoding>UTF-8</encoding>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <!-- On copie les ressources web statiques avant d'exécuter le dev-mode -->
+      <!-- Utilisable uniquement pour m2e -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.4.2</version>
@@ -421,7 +446,7 @@
             </goals>
             <configuration>
               <encoding>UTF-8</encoding>
-              <outputDirectory>${webappDirectory}</outputDirectory>
+              <outputDirectory>${gwt.webdev}</outputDirectory>
               <resources>
                 <resource>
                   <directory>src/main/webapp</directory>
@@ -433,5 +458,17 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <properties>
+        <gwt.module.profile>fr.generali.ccj.sample.gwt.Sample</gwt.module.profile>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+  </profiles>
 
 </project>

@@ -38,9 +38,9 @@ class NavBar extends Composite {
         this.outer = outer;
     }
 
-    public void update(int startIndex, int count, int max) {
+    public void update(long startIndex, long count, long max) {
         setVisibility(newerButton, startIndex != 0);
-        setVisibility(olderButton, startIndex + CountryList.VISIBLE_COUNTRY_COUNT < count);
+        setVisibility(olderButton, startIndex + CountryList.PAGE_SIZE < count);
         countLabel.setInnerText("" + (startIndex + 1) + " - " + max + " of " + count);
     }
 

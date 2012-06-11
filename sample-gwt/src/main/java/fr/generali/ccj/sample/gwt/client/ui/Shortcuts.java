@@ -16,6 +16,9 @@ public class Shortcuts extends ResizeComposite {
     @UiField
     Countries countries;
 
+    @UiField
+    GeoDistance geodistance;
+
     /**
      * Constructs a new shortcuts widget using the specified images.
      * 

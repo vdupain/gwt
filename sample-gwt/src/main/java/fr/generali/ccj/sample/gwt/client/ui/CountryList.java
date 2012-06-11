@@ -1,24 +1,36 @@
 package fr.generali.ccj.sample.gwt.client.ui;
 
+import java.util.ArrayList;
+
+import net.customware.gwt.dispatch.client.DefaultExceptionHandler;
+import net.customware.gwt.dispatch.client.DispatchAsync;
+import net.customware.gwt.dispatch.client.standard.StandardDispatchAsync;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 
+import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListAction;
+import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListResult;
+import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
+
 public class CountryList extends ResizeComposite {
+    private ArrayList<GeonameDto> currentResult = new ArrayList<GeonameDto>();
 
     /**
      * Callback when items are selected.
      */
     public interface Listener {
-        void onItemSelected(Geoname item);
+        void onItemSelected(GeonameDto item);
     }
 
     interface Binder extends UiBinder<Widget, CountryList> {
@@ -26,11 +38,12 @@ public class CountryList extends ResizeComposite {
 
     interface SelectionStyle extends CssResource {
         String selectedRow();
+        String alternateRow();
     }
 
     private static final Binder binder = GWT.create(Binder.class);
 
-    static final int VISIBLE_COUNTRY_COUNT = 20;
+    static final int PAGE_SIZE = 20;
 
     @UiField
     FlexTable header;
@@ -47,7 +60,10 @@ public class CountryList extends ResizeComposite {
 
     private NavBar navBar;
 
+    private DispatchAsync dispatch;
+
     public CountryList() {
+        dispatch = new StandardDispatchAsync(new DefaultExceptionHandler());
         initWidget(binder.createAndBindUi(this));
         navBar = new NavBar(this);
 
@@ -72,7 +88,7 @@ public class CountryList extends ResizeComposite {
 
     void newer() {
         // Move back a page.
-        startIndex -= VISIBLE_COUNTRY_COUNT;
+        startIndex -= PAGE_SIZE;
         if (startIndex < 0) {
             startIndex = 0;
         } else {
@@ -84,9 +100,9 @@ public class CountryList extends ResizeComposite {
 
     void older() {
         // Move forward a page.
-        startIndex += VISIBLE_COUNTRY_COUNT;
+        startIndex += PAGE_SIZE;
         if (startIndex >= CountryItems.getGeonameCount()) {
-            startIndex -= VISIBLE_COUNTRY_COUNT;
+            startIndex -= PAGE_SIZE;
         } else {
             styleRow(selectedRow, false);
             selectedRow = -1;
@@ -110,11 +126,12 @@ public class CountryList extends ResizeComposite {
      */
     private void initTable() {
         // Initialize the header.
-        header.getColumnFormatter().setWidth(0, "80px");
-        header.getColumnFormatter().setWidth(1, "80px");
-        header.getColumnFormatter().setWidth(2, "80px");
-        header.getColumnFormatter().setWidth(3, "80px");
-        header.getColumnFormatter().setWidth(4, "80px");
+        header.getColumnFormatter().setWidth(0, "100px");
+        header.getColumnFormatter().setWidth(1, "100px");
+        header.getColumnFormatter().setWidth(2, "100px");
+        header.getColumnFormatter().setWidth(3, "100px");
+        header.getColumnFormatter().setWidth(4, "100px");
+        header.getColumnFormatter().setWidth(5, "100px");
 
         header.setText(0, 0, "Name");
         header.setText(0, 1, "Asciiname");
@@ -122,15 +139,16 @@ public class CountryList extends ResizeComposite {
         header.setText(0, 3, "Longitude");
         header.setText(0, 4, "Latitude");
         header.setWidget(0, 5, navBar);
-        // header.getCellFormatter().setHorizontalAlignment(0, 3,
+        // header.getCellFormatter().setHorizontalAlignment(0, 4,
         // HasHorizontalAlignment.ALIGN_RIGHT);
 
         // Initialize the table.
-        table.getColumnFormatter().setWidth(0, "80px");
-        table.getColumnFormatter().setWidth(1, "80px");
-        table.getColumnFormatter().setWidth(2, "80px");
-        table.getColumnFormatter().setWidth(3, "80px");
-        table.getColumnFormatter().setWidth(4, "80px");
+        table.getColumnFormatter().setWidth(0, "100px");
+        table.getColumnFormatter().setWidth(1, "100px");
+        table.getColumnFormatter().setWidth(2, "100px");
+        table.getColumnFormatter().setWidth(3, "100px");
+        table.getColumnFormatter().setWidth(4, "100px");
+        table.getColumnFormatter().setWidth(5, "100px");
     }
 
     /**
@@ -140,8 +158,12 @@ public class CountryList extends ResizeComposite {
      */
     private void selectRow(int row) {
         // When a row (other than the first one, which is used as a header) is
-        // selected, display its associated MailItem.
-        Geoname item = CountryItems.getGeoname(startIndex + row);
+        // selected, display its associated iItem.
+        GeonameDto item = null;
+        if (row < currentResult.size()) {
+            item = currentResult.get(row); // CountryItems.getGeoname(startIndex
+                                           // + row);
+        }
         if (item == null) {
             return;
         }
@@ -169,38 +191,43 @@ public class CountryList extends ResizeComposite {
     }
 
     private void update() {
-        // Update the older/newer buttons & label.
-        int count = CountryItems.getGeonameCount();
-        int max = startIndex + VISIBLE_COUNTRY_COUNT;
-        if (max > count) {
-            max = count;
-        }
 
-        // Update the nav bar.
-        navBar.update(startIndex, count, max);
+        AsyncCallback<GeonameListResult> callback = new AsyncCallback<GeonameListResult>() {
 
-        // Show the selected emails.
-        int i = 0;
-        for (; i < VISIBLE_COUNTRY_COUNT; ++i) {
-            // Don't read past the end.
-            if (startIndex + i >= CountryItems.getGeonameCount()) {
-                break;
+            public void onSuccess(GeonameListResult result) {
+                // Update the older/newer buttons & label.
+                long count = result.getTotalHits();
+                long max = startIndex + PAGE_SIZE;
+                if (max > count) {
+                    max = count;
+                }
+
+                // Update the nav bar.
+                navBar.update(startIndex, count, max);
+
+                int i = 0;
+                currentResult = result.getList();
+                for (GeonameDto geonameDto : currentResult) {
+                    if (i % 2 != 0) {
+                        table.getRowFormatter().addStyleName(i, selectionStyle.alternateRow());
+                    }
+                    table.setText(i, 0, geonameDto.getName());
+                    table.setText(i, 1, geonameDto.getAsciiname());
+                    table.setText(i, 2, geonameDto.getCountryCode());
+                    table.setText(i, 3, Double.toString(geonameDto.getLongitude()));
+                    table.setText(i, 4, Double.toString(geonameDto.getLatitude()));
+                    i++;
+                }
+                // Clear any remaining slots.
+                for (; i < PAGE_SIZE; ++i) {
+                    table.removeRow(table.getRowCount() - 1);
+                }
             }
 
-            Geoname item = CountryItems.getGeoname(startIndex + i);
-
-            // Add a new row to the table, then set each of its columns to the
-            // email's sender and subject values.
-            table.setText(i, 0, item.getName());
-            table.setText(i, 1, item.getAsciiname());
-            table.setText(i, 2, item.getCountryCode());
-            table.setText(i, 3, Double.toString(item.getLongitude()));
-            table.setText(i, 4, Double.toString(item.getLatitude()));
-        }
-
-        // Clear any remaining slots.
-        for (; i < VISIBLE_COUNTRY_COUNT; ++i) {
-            table.removeRow(table.getRowCount() - 1);
-        }
+            public void onFailure(Throwable caught) {
+                Window.alert(caught.toString());
+            }
+        };
+        dispatch.execute(new GeonameListAction(startIndex, PAGE_SIZE), callback);
     }
 }

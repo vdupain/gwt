@@ -48,6 +48,10 @@
     background: #adcce7;
   }
 
+  .alternateRow {
+    background: #c8e1fe;
+  }
+
   .selectedRow td {
     border-top: 1px solid #88a4d6;
     border-bottom: 1px solid #7b97d0;
