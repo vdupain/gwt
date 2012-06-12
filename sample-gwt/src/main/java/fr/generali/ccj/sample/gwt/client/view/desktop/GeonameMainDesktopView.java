@@ -10,8 +10,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import fr.generali.ccj.sample.gwt.client.view.GeonameListView;
+import fr.generali.ccj.sample.gwt.client.ClientFactory;
 import fr.generali.ccj.sample.gwt.client.view.GeonameMainView;
+import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
 public class GeonameMainDesktopView extends Composite implements GeonameMainView {
     
@@ -40,7 +41,8 @@ public class GeonameMainDesktopView extends Composite implements GeonameMainView
 
     private Presenter presenter;
 
-    public GeonameMainDesktopView(GeonameListView.Presenter geonameListViewPresenter) {
+    public GeonameMainDesktopView(ClientFactory clientFactory) {
+        this.geonameListView = geonameListView;
         // Inject global styles.
         GWT.<GlobalResources>create(GlobalResources.class).css().ensureInjected();
         
@@ -51,15 +53,13 @@ public class GeonameMainDesktopView extends Composite implements GeonameMainView
         Window.enableScrolling(false);
         Window.setMargin("0px");
 
-//        // Listen for item selection, displaying the currently-selected item in
-//        // the detail area.
-//        geonameListView.setListener(new GeonameListDesktopView.Listener() {
-//            public void onItemSelected(GeonameDto item) {
-//                geonameDetailDesktopView.setGeonameDto(item);
-//            }
-//        });
-        
-        geonameListView.setPresenter(geonameListViewPresenter);
+        // Listen for item selection, displaying the currently-selected item in
+        // the detail area.
+        geonameListView.setListener(new GeonameListDesktopView.Listener() {
+            public void onItemSelected(GeonameDto item) {
+                geonameDetailDesktopView.setGeonameDto(item);
+            }
+        });
     }
 
     public void setPresenter(Presenter presenter) {

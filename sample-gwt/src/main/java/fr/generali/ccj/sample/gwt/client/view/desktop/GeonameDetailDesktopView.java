@@ -1,12 +1,11 @@
 package fr.generali.ccj.sample.gwt.client.view.desktop;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import fr.generali.ccj.sample.gwt.client.view.GeonameDetailView;
@@ -20,8 +19,19 @@ public class GeonameDetailDesktopView extends ResizeComposite implements Geoname
     private static final Binder binder = GWT.create(Binder.class);
 
     @UiField
-    HTML body;
-
+    TextBox name;
+    @UiField
+    TextBox asciiname;
+    @UiField
+    TextArea alternatenames;
+    @UiField
+    TextBox countryCode;
+    @UiField
+    TextBox longitude;
+    @UiField
+    TextBox latitude;
+    
+    
     private Presenter presenter;
 
     public GeonameDetailDesktopView() {
@@ -29,15 +39,12 @@ public class GeonameDetailDesktopView extends ResizeComposite implements Geoname
     }
 
     public void setGeonameDto(GeonameDto geonameDto) {
-        SafeHtml safeHtml =
-                        new SafeHtmlBuilder().append(geonameDto.getGeonameId()).appendHtmlConstant("<br>")
-                                        .appendEscaped(geonameDto.getName()).appendHtmlConstant("<br>")
-                                        .appendEscaped(geonameDto.getAsciiname()).appendHtmlConstant("<br>")
-                                        .appendEscaped(geonameDto.getAlternatenames()).appendHtmlConstant("<br>")
-                                        .appendEscaped(geonameDto.getCountryCode()).appendHtmlConstant("<br>")
-                                        .toSafeHtml();
-
-        body.setHTML(safeHtml);
+        name.setText(geonameDto.getName());
+        asciiname.setText(geonameDto.getAsciiname());
+        alternatenames.setText(geonameDto.getAlternatenames());
+        countryCode.setText(geonameDto.getCountryCode());
+        longitude.setText(Double.toString(geonameDto.getLongitude()));
+        latitude.setText(Double.toString(geonameDto.getLatitude()));
     }
 
     public void setPresenter(Presenter presenter) {

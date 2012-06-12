@@ -14,9 +14,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -26,16 +28,16 @@ import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListAction;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListResult;
 import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
-public class GeonameListDesktopView extends ResizeComposite implements GeonameListView {
+public class GeonameListDesktopView extends ResizeComposite implements GeonameListView, AcceptsOneWidget {
 
     private ArrayList<GeonameDto> currentResult = new ArrayList<GeonameDto>();
 
     /**
      * Callback when items are selected.
      */
-    /*
-     * public interface Listener { void onItemSelected(GeonameDto item); }
-     */
+    public interface Listener {
+        void onItemSelected(GeonameDto item);
+    }
 
     interface Binder extends UiBinder<Widget, GeonameListDesktopView> {
     }
@@ -59,7 +61,7 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     @UiField
     SelectionStyle selectionStyle;
 
-    // private Listener listener;
+    private Listener listener;
 
     private int startIndex, selectedRow = -1;
 
@@ -83,9 +85,10 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     /**
      * Sets the listener that will be notified when an item is selected.
      */
-    /*
-     * public void setListener(Listener listener) { this.listener = listener; }
-     */
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
 
     @Override
     protected void onLoad() {
@@ -177,10 +180,11 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
         selectedRow = row;
 
-        /*
-         * if (listener != null) { listener.onItemSelected(item); }
-         */
-        presenter.onGeonameSelected(new GeonameSelectedEvent(item));
+        if (listener != null) {
+            listener.onItemSelected(item);
+        }
+
+        // presenter.onGeonameSelected(new GeonameSelectedEvent(item));
     }
 
     private void styleRow(int row, boolean selected) {
@@ -236,5 +240,8 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    public void setWidget(IsWidget w) {
     }
 }

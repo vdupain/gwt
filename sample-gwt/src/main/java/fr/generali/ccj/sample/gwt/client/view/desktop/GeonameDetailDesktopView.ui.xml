@@ -7,28 +7,32 @@
     	background-color: white;
     }
     
-    .header {
-    	background: #eee;
-    	border-bottom: 1px solid #666;
-    	padding: 0.5em;
-    }
-    
-    .headerItem {
-    	margin-bottom: 0.5em;
-    }
-    
-    .body {
-    	line-height: 150%;
-    	padding: 20px 40px 20px 10px;
-    	font-family: 'Times New Roman', Times, serif;
-    }
   </ui:style>
 
   <g:DockLayoutPanel unit='EM' styleName='{style.detail}'>
     <g:center>
-      <g:ScrollPanel>
-        <g:HTML styleName='{style.body}' ui:field='body' wordWrap='true' />
-      </g:ScrollPanel>
+      <g:AbsolutePanel>
+          <g:Grid>
+            <g:row>
+              <g:customCell><g:Label text="name" /></g:customCell>
+              <g:customCell><g:TextBox ui:field="name"/></g:customCell>
+              <g:customCell><g:Label text="asciiname" /></g:customCell>
+              <g:customCell><g:TextBox  ui:field="asciiname" /></g:customCell>
+              <g:customCell><g:Label text="countryCode" /></g:customCell>
+              <g:customCell><g:TextBox ui:field="countryCode"/></g:customCell>
+            </g:row>
+            <g:row>
+              <g:customCell><g:Label text="alternatenames" /></g:customCell>
+              <g:customCell><g:TextArea ui:field="alternatenames"/></g:customCell>
+            </g:row>
+            <g:row>
+              <g:customCell><g:Label text="longitude" /></g:customCell>
+              <g:customCell><g:TextBox ui:field="longitude"/></g:customCell>
+              <g:customCell><g:Label text="latitude" /></g:customCell>
+              <g:customCell><g:TextBox ui:field="latitude"/></g:customCell>
+            </g:row>
+          </g:Grid>
+      </g:AbsolutePanel>
     </g:center>
   </g:DockLayoutPanel>
 

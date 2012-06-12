@@ -21,7 +21,7 @@ public class DesktopClientFactory implements ClientFactory {
 
     private final GeonameDetailView geonameDetailView = new GeonameDetailDesktopView();
 
-    private final GeonameMainView geonameMainView = new GeonameMainDesktopView();
+    private final GeonameMainView geonameMainView = new GeonameMainDesktopView(this);
 
     public EventBus getEventBus() {
         return this.eventBus;
