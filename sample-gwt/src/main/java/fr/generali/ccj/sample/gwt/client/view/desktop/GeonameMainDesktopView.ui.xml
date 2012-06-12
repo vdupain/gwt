@@ -1,0 +1,25 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui'
+  xmlns:sample='urn:import:fr.generali.ccj.sample.gwt.client.view.desktop'>
+
+  <g:DockLayoutPanel unit='EM' height="100%">
+    <g:north size='5'>
+      <sample:TopPanel ui:field='topPanel' />
+    </g:north>
+
+    <g:center size='200'>
+      <g:SplitLayoutPanel>
+        <g:west size='192'>
+          <sample:ShortcutsDesktopView ui:field='shortcutsDesktopView' />
+        </g:west>
+        <g:north size='200'>
+          <sample:GeonameListDesktopView ui:field='geonameListView' />
+        </g:north>
+        <g:center>
+          <sample:GeonameDetailDesktopView ui:field='geonameDetailDesktopView' />
+        </g:center>
+      </g:SplitLayoutPanel>
+    </g:center>
+
+  </g:DockLayoutPanel>
+
+</ui:UiBinder>

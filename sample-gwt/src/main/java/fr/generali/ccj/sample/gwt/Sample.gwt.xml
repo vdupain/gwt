@@ -15,14 +15,27 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
 
   <!-- Other module inherits -->
+  <inherits name="com.google.gwt.resources.Resources" />
   <!-- GWT dispatch -->
   <inherits name='net.customware.gwt.dispatch.Dispatch' />
   
   <!-- Gin -->
   <inherits name="com.google.gwt.inject.Inject"/>
+  
+  <!-- Activities and Places -->
+  <inherits name="com.google.gwt.activity.Activity" />
+  <inherits name="com.google.gwt.place.Place" />
+  
     
   <!-- Specify the app entry point class. -->
-  <entry-point class='fr.generali.ccj.sample.gwt.client.ui.Sample' />
+<!--   <entry-point class='fr.generali.ccj.sample.gwt.client.view.desktop.Sample' />
+ -->
+   <entry-point class='fr.generali.ccj.sample.gwt.client.SampleEntryPoint' />
+   
+    <!-- Use ClientFactoryImpl by default -->
+  <replace-with class="fr.generali.ccj.sample.gwt.client.DesktopClientFactory">
+    <when-type-is class="fr.generali.ccj.sample.gwt.client.ClientFactory" />
+  </replace-with>  
 
   <!-- Specify the paths for translatable code -->
   <source path='client' />

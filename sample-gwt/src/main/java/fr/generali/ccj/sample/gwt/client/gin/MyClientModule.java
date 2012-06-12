@@ -11,14 +11,14 @@ import com.google.inject.Singleton;
 import fr.generali.ccj.sample.gwt.client.MyMainPanel;
 import fr.generali.ccj.sample.gwt.client.dispatch.DispatchUrlBuilder;
 import fr.generali.ccj.sample.gwt.client.dispatch.MySecureDispatchAsync;
-import fr.generali.ccj.sample.gwt.client.ui.CountryList;
+import fr.generali.ccj.sample.gwt.client.view.desktop.GeonameListDesktopView;
 
 public class MyClientModule extends AbstractGinModule {
 
     @Override
     protected void configure() {
         bind(MyMainPanel.class).in(Singleton.class);
-        bind(CountryList.class).in(Singleton.class);
+        bind(GeonameListDesktopView.class).in(Singleton.class);
     }
 
     @Provides
