@@ -9,29 +9,45 @@
     
   </ui:style>
 
-  <g:DockLayoutPanel unit='EM' styleName='{style.detail}'>
+  <g:DockLayoutPanel unit='EM' styleName='{style.detail}' width="100%" height="100%">
     <g:center>
-      <g:AbsolutePanel>
-          <g:Grid>
-            <g:row>
-              <g:customCell><g:Label text="name" /></g:customCell>
-              <g:customCell><g:TextBox ui:field="name"/></g:customCell>
-              <g:customCell><g:Label text="asciiname" /></g:customCell>
-              <g:customCell><g:TextBox  ui:field="asciiname" /></g:customCell>
-              <g:customCell><g:Label text="countryCode" /></g:customCell>
-              <g:customCell><g:TextBox ui:field="countryCode"/></g:customCell>
-            </g:row>
-            <g:row>
-              <g:customCell><g:Label text="alternatenames" /></g:customCell>
-              <g:customCell><g:TextArea ui:field="alternatenames"/></g:customCell>
-            </g:row>
-            <g:row>
-              <g:customCell><g:Label text="longitude" /></g:customCell>
-              <g:customCell><g:TextBox ui:field="longitude"/></g:customCell>
-              <g:customCell><g:Label text="latitude" /></g:customCell>
-              <g:customCell><g:TextBox ui:field="latitude"/></g:customCell>
-            </g:row>
-          </g:Grid>
+      <g:AbsolutePanel width="100%" height="100%">
+          <g:at left="10" top="6">
+          	<g:Label text="name" />
+          </g:at>
+          <g:at left="119" top="6">
+          	<g:TextBox ui:field="name"/>
+          </g:at>
+          <g:at left="10" top="35">
+          	<g:Label text="asciiname" />
+          </g:at>
+          <g:at left="119" top="35">
+          	<g:TextBox  ui:field="asciiname" />
+          </g:at>
+          <g:at left="315" top="6">
+          	<g:Label text="countryCode" />
+          </g:at>
+          <g:at left="403" top="6">
+          	<g:TextBox ui:field="countryCode"/>
+          </g:at>
+          <g:at left="10" top="115">
+          	<g:Label text="alternatenames" />
+          </g:at>
+          <g:at left="119" top="115">
+          	<g:TextArea ui:field="alternatenames" width="456px" height="48px"/>
+          </g:at>
+          <g:at left="268" top="70">
+          	<g:Label text="longitude" />
+          </g:at>
+          <g:at left="352" top="70">
+          	<g:TextBox ui:field="longitude" width="98px" height="17px"/>
+          </g:at>
+          <g:at left="119" top="70">
+          	<g:TextBox ui:field="latitude" width="117px" height="17px"/>
+          </g:at>
+          <g:at left="10" top="70">
+          	<g:Label text="latitude" />
+          </g:at>
       </g:AbsolutePanel>
     </g:center>
   </g:DockLayoutPanel>

@@ -7,15 +7,12 @@
     </g:north>
 
     <g:center size='200'>
-      <g:SplitLayoutPanel>
+      <g:SplitLayoutPanel>      
         <g:west size='192'>
           <sample:ShortcutsDesktopView ui:field='shortcutsDesktopView' />
         </g:west>
-        <g:north size='200'>
-          <sample:GeonameListDesktopView ui:field='geonameListView' />
-        </g:north>
         <g:center>
-          <sample:GeonameDetailDesktopView ui:field='geonameDetailDesktopView' />
+          <sample:GeonameMainContentDesktopView ui:field='geonameMainContentDesktopView' />
         </g:center>
       </g:SplitLayoutPanel>
     </g:center>

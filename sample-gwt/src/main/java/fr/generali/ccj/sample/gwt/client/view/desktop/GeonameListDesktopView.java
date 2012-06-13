@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 
-import fr.generali.ccj.sample.gwt.client.event.GeonameSelectedEvent;
 import fr.generali.ccj.sample.gwt.client.view.GeonameListView;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListAction;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListResult;
@@ -143,13 +142,15 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
         header.getColumnFormatter().setWidth(2, "80px");
         header.getColumnFormatter().setWidth(3, "80px");
         header.getColumnFormatter().setWidth(4, "80px");
+        header.getColumnFormatter().setWidth(4, "80px");
 
-        header.setText(0, 0, "Name");
-        header.setText(0, 1, "CountryCode");
-        header.setText(0, 2, "Longitude");
-        header.setText(0, 3, "Latitude");
-        header.setWidget(0, 4, navBar);
-        header.getCellFormatter().setHorizontalAlignment(0, 4, HasHorizontalAlignment.ALIGN_RIGHT);
+        header.setText(0, 0, "GeonameId");
+        header.setText(0, 1, "Name");
+        header.setText(0, 2, "CountryCode");
+        header.setText(0, 3, "Longitude");
+        header.setText(0, 4, "Latitude");
+        header.setWidget(0, 5, navBar);
+        header.getCellFormatter().setHorizontalAlignment(0, 5, HasHorizontalAlignment.ALIGN_RIGHT);
 
         // Initialize the table.
         table.getColumnFormatter().setWidth(0, "80px");
@@ -157,6 +158,7 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
         table.getColumnFormatter().setWidth(2, "80px");
         table.getColumnFormatter().setWidth(3, "80px");
         table.getColumnFormatter().setWidth(4, "80px");
+        table.getColumnFormatter().setWidth(5, "80px");
     }
 
     /**
@@ -219,10 +221,11 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
                     if (i % 2 != 0) {
                         table.getRowFormatter().addStyleName(i, selectionStyle.alternateRow());
                     }
-                    table.setText(i, 0, geonameDto.getName());
-                    table.setText(i, 1, geonameDto.getCountryCode());
-                    table.setText(i, 2, Double.toString(geonameDto.getLongitude()));
-                    table.setText(i, 3, Double.toString(geonameDto.getLatitude()));
+                    table.setText(i, 0, Integer.toString(geonameDto.getGeonameId()));
+                    table.setText(i, 1, geonameDto.getName());
+                    table.setText(i, 2, geonameDto.getCountryCode());
+                    table.setText(i, 3, Double.toString(geonameDto.getLongitude()));
+                    table.setText(i, 4, Double.toString(geonameDto.getLatitude()));
                     i++;
                 }
                 // Clear any remaining slots.

@@ -1,0 +1,14 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:sample='urn:import:fr.generali.ccj.sample.gwt.client.view.desktop'>
+
+  <g:SplitLayoutPanel>
+    <g:north size='200'>
+      <sample:GeonameListDesktopView ui:field='geonameListView' />
+    </g:north>
+    <g:center>
+      <sample:GeonameDetailDesktopView ui:field='geonameDetailDesktopView' />
+    </g:center>
+  </g:SplitLayoutPanel>
+
+</ui:UiBinder> 
