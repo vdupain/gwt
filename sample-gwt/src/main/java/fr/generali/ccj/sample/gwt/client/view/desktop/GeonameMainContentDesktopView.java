@@ -5,10 +5,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+import fr.generali.ccj.sample.gwt.client.view.GeonameMainContentView;
 import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
-public class GeonameMainContentDesktopView extends Composite {
+@Singleton
+public class GeonameMainContentDesktopView extends Composite implements GeonameMainContentView {
 
     private static GeonameMainContentDesktopViewUiBinder uiBinder = GWT
                     .create(GeonameMainContentDesktopViewUiBinder.class);
@@ -22,6 +26,9 @@ public class GeonameMainContentDesktopView extends Composite {
     @UiField
     GeonameDetailDesktopView geonameDetailDesktopView;
 
+    private Presenter presenter;
+
+    @Inject
     public GeonameMainContentDesktopView() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -34,6 +41,10 @@ public class GeonameMainContentDesktopView extends Composite {
             }
         });
 
+    }
+
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
     }
 
 }

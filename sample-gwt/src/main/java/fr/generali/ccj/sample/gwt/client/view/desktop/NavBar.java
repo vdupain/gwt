@@ -11,11 +11,13 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 
 
 /**
  * A simple widget representing prev/next page navigation.
  */
+@Singleton
 class NavBar extends Composite {
     @UiTemplate("NavBar.ui.xml")
     interface Binder extends UiBinder<Widget, NavBar> {
@@ -46,7 +48,7 @@ class NavBar extends Composite {
     }
 
     @UiHandler("newerButton")
-    void onNewerClicked(ClickEvent event) {
+    void onNewerClicked(ClickEvent event) {        
         outer.newer();
     }
 

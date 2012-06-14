@@ -7,10 +7,12 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 
 import fr.generali.ccj.sample.gwt.client.view.GeonameDetailView;
 import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
+@Singleton
 public class GeonameDetailDesktopView extends ResizeComposite implements GeonameDetailView {
 
     interface Binder extends UiBinder<Widget, GeonameDetailDesktopView> {

@@ -12,7 +12,8 @@
           <sample:ShortcutsDesktopView ui:field='shortcutsDesktopView' />
         </g:west>
         <g:center>
-          <sample:GeonameMainContentDesktopView ui:field='geonameMainContentDesktopView' />
+          <!-- <sample:GeonameMainContentDesktopView ui:field='geonameMainContentDesktopView' />  -->
+          <g:SimpleLayoutPanel ui:field='geonameMainContentDesktopView' />
         </g:center>
       </g:SplitLayoutPanel>
     </g:center>

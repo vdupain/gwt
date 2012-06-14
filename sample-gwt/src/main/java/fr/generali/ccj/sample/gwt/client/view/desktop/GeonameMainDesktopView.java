@@ -1,25 +1,22 @@
 package fr.generali.ccj.sample.gwt.client.view.desktop;
 
+import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.CssResource.NotStrict;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
-import fr.generali.ccj.sample.gwt.client.ClientFactory;
-import fr.generali.ccj.sample.gwt.client.view.GeonameMainView;
+import fr.generali.ccj.sample.gwt.client.mvp.AppActivityMapper;
 
-public class GeonameMainDesktopView extends Composite implements GeonameMainView {
-
-    interface GlobalResources extends ClientBundle {
-        @NotStrict
-        @Source("global.css")
-        CssResource css();
-    }
+@Singleton
+public class GeonameMainDesktopView extends Composite {
 
     interface Binder extends UiBinder<Widget, GeonameMainDesktopView> {
     }
@@ -31,15 +28,13 @@ public class GeonameMainDesktopView extends Composite implements GeonameMainView
 
     @UiField
     ShortcutsDesktopView shortcutsDesktopView;
-    
+
+//    @UiField(provided = true)
     @UiField
-    GeonameMainContentDesktopView geonameMainContentDesktopView;
+    SimpleLayoutPanel geonameMainContentDesktopView;
 
-    private Presenter presenter;
-
-    public GeonameMainDesktopView(ClientFactory clientFactory) {
-        // Inject global styles.
-        GWT.<GlobalResources> create(GlobalResources.class).css().ensureInjected();
+    @Inject
+    public GeonameMainDesktopView(AppActivityMapper mainContentActivityMapper, EventBus eventBus, PlaceHistoryHandler placeHistoryHandler) {
 
         initWidget(binder.createAndBindUi(this));
 
@@ -47,10 +42,13 @@ public class GeonameMainDesktopView extends Composite implements GeonameMainView
         // because we want to take advantage of the entire client area.
         Window.enableScrolling(false);
         Window.setMargin("0px");
-    }
 
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
+      // Start ActivityManager for the main widget with our ActivityMapper
+      ActivityManager leftActivityManager = new ActivityManager(mainContentActivityMapper, eventBus);
+      leftActivityManager.setDisplay(geonameMainContentDesktopView);
+      
+      // Goes to the place represented on URL else default place
+      placeHistoryHandler.handleCurrentHistory();
     }
 
 }

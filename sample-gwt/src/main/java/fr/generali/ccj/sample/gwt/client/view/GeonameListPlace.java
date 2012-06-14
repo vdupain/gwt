@@ -5,20 +5,20 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
 public class GeonameListPlace extends Place {
-    private String token;
+    private String pageIndex;
 
-    public GeonameListPlace(String token) {
-        this.token = token;
+    public GeonameListPlace(String pageIndex) {
+        this.pageIndex = pageIndex;
     }
 
-    public String getToken() {
-        return token;
+    public String getPageIndex() {
+        return pageIndex;
     }
 
     @Prefix("list") // Ancre utilisée pour identifier cette Place.
     public static class Tokenizer implements PlaceTokenizer<GeonameListPlace> {
         public String getToken(GeonameListPlace place) {
-            return place.getToken();
+            return place.getPageIndex();
         }
 
         public GeonameListPlace getPlace(String token) {
