@@ -22,18 +22,22 @@ public class GeonameDetailDesktopView extends ResizeComposite implements Geoname
 
     @UiField
     TextBox name;
+
     @UiField
     TextBox asciiname;
+
     @UiField
     TextArea alternatenames;
+
     @UiField
     TextBox countryCode;
+
     @UiField
     TextBox longitude;
+
     @UiField
     TextBox latitude;
-    
-    
+
     private Presenter presenter;
 
     public GeonameDetailDesktopView() {

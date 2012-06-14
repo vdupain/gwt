@@ -15,9 +15,12 @@ public interface GeonameListView extends IsWidget {
 
     ArrayList<GeonameDto> getCurrentList();
 
+    void update();
+
     public interface Presenter {
         void goTo(Place place);
 
     }
+
 
 }

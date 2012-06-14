@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import fr.generali.ccj.sample.gwt.client.view.GeonameMainContentPlace;
 import fr.generali.ccj.sample.gwt.client.view.GeonameMainContentView;
 import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
@@ -20,16 +21,19 @@ public class GeonameMainContentDesktopView extends Composite implements GeonameM
     interface GeonameMainContentDesktopViewUiBinder extends UiBinder<Widget, GeonameMainContentDesktopView> {
     }
 
-    @UiField
+    @UiField(provided = true)
     GeonameListDesktopView geonameListView;
 
-    @UiField
+    @UiField(provided = true)
     GeonameDetailDesktopView geonameDetailDesktopView;
 
     private Presenter presenter;
 
     @Inject
-    public GeonameMainContentDesktopView() {
+    public GeonameMainContentDesktopView(GeonameListDesktopView geonameListView,
+                    GeonameDetailDesktopView geonameDetailDesktopView) {
+        this.geonameListView = geonameListView;
+        this.geonameDetailDesktopView = geonameDetailDesktopView;
         initWidget(uiBinder.createAndBindUi(this));
 
         // Listen for item selection, displaying the currently-selected item in
@@ -37,7 +41,8 @@ public class GeonameMainContentDesktopView extends Composite implements GeonameM
 
         geonameListView.setListener(new GeonameListDesktopView.Listener() {
             public void onItemSelected(GeonameDto item) {
-                geonameDetailDesktopView.setGeonameDto(item);
+                presenter.goTo(new GeonameMainContentPlace(GeonameMainContentDesktopView.this.geonameListView
+                                .getPageIndex() + "_" + item.getGeonameId()));
             }
         });
 

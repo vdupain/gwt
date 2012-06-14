@@ -21,8 +21,6 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
-import fr.generali.ccj.sample.gwt.client.view.GeonameDetailPlace;
-import fr.generali.ccj.sample.gwt.client.view.GeonameListPlace;
 import fr.generali.ccj.sample.gwt.client.view.GeonameListView;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListAction;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListResult;
@@ -81,13 +79,6 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
         initTable();
         update();
-
-        setListener(new GeonameListDesktopView.Listener() {
-            public void onItemSelected(GeonameDto item) {
-                presenter.goTo(new GeonameDetailPlace(Integer.toString(item.getGeonameId())));
-            }
-        });
-
     }
 
     /**
@@ -107,8 +98,6 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     }
 
     void newer() {
-        presenter.goTo(new GeonameListPlace(Integer.toString(pageIndex)));
-        
         // Move back a page.
         pageIndex -= PAGE_SIZE;
         if (pageIndex < 0) {
@@ -121,8 +110,6 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     }
 
     void older() {
-        presenter.goTo(new GeonameListPlace(Integer.toString(pageIndex)));
-        
         // Move forward a page.
         pageIndex += PAGE_SIZE;
         if (pageIndex >= totalHits) {
@@ -214,7 +201,7 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
         }
     }
 
-    private void update() {
+    public void update() {
         AsyncCallback<GeonameListResult> callback = new AsyncCallback<GeonameListResult>() {
 
             public void onSuccess(GeonameListResult result) {
@@ -264,5 +251,9 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
     public void setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
+    }
+
+    public int getPageIndex() {
+        return this.pageIndex;
     }
 }
