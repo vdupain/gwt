@@ -8,9 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import fr.generali.ccj.sample.gwt.client.view.GeonameMainContentPlace;
 import fr.generali.ccj.sample.gwt.client.view.GeonameMainContentView;
-import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
 @Singleton
 public class GeonameMainContentDesktopView extends Composite implements GeonameMainContentView {
@@ -35,17 +33,6 @@ public class GeonameMainContentDesktopView extends Composite implements GeonameM
         this.geonameListView = geonameListView;
         this.geonameDetailDesktopView = geonameDetailDesktopView;
         initWidget(uiBinder.createAndBindUi(this));
-
-        // Listen for item selection, displaying the currently-selected item in
-        // the detail area.
-
-        geonameListView.setListener(new GeonameListDesktopView.Listener() {
-            public void onItemSelected(GeonameDto item) {
-                presenter.goTo(new GeonameMainContentPlace(GeonameMainContentDesktopView.this.geonameListView
-                                .getPageIndex() + "_" + item.getGeonameId()));
-            }
-        });
-
     }
 
     public void setPresenter(Presenter presenter) {

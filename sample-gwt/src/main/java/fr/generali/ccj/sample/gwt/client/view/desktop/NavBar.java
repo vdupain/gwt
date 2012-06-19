@@ -34,6 +34,12 @@ class NavBar extends Composite {
     @UiField
     Anchor olderButton;
 
+    @UiField
+    Anchor firstButton;
+
+    @UiField
+    Anchor lastButton;
+
     private final GeonameListDesktopView outer;
 
     public NavBar(GeonameListDesktopView outer) {
@@ -57,7 +63,18 @@ class NavBar extends Composite {
         outer.older();
     }
 
+    @UiHandler("firstButton")
+    void onFirstClicked(ClickEvent event) {        
+        outer.first();
+    }
+
+    @UiHandler("lastButton")
+    void onLastClicked(ClickEvent event) {        
+        outer.last();
+    }
+
     private void setVisibility(Widget widget, boolean visible) {
         widget.getElement().getStyle().setVisibility(visible ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
+
 }

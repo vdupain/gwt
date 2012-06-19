@@ -8,35 +8,28 @@ import net.customware.gwt.dispatch.client.standard.StandardDispatchAsync;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import fr.generali.ccj.sample.gwt.client.event.GeonameSelectedEvent;
+import fr.generali.ccj.sample.gwt.client.event.PageChangedEvent;
 import fr.generali.ccj.sample.gwt.client.view.GeonameListView;
-import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListAction;
-import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListResult;
 import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
 @Singleton
 public class GeonameListDesktopView extends ResizeComposite implements GeonameListView {
 
     private ArrayList<GeonameDto> currentList = new ArrayList<GeonameDto>();
-
-    /**
-     * Callback when items are selected.
-     */
-    public interface Listener {
-        void onItemSelected(GeonameDto item);
-    }
 
     interface Binder extends UiBinder<Widget, GeonameListDesktopView> {
     }
@@ -49,7 +42,7 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
     private static final Binder binder = GWT.create(Binder.class);
 
-    static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 20;
 
     @UiField
     FlexTable header;
@@ -60,8 +53,6 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     @UiField
     SelectionStyle selectionStyle;
 
-    private Listener listener;
-
     private int pageIndex, selectedRow = -1;
 
     private NavBar navBar;
@@ -70,23 +61,18 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
     private Presenter presenter;
 
-    private long totalHits;
+    private long totalHits = 0;
 
-    public GeonameListDesktopView() {
+    private final EventBus eventBus;
+
+    @Inject
+    public GeonameListDesktopView(EventBus eventBus) {
+        this.eventBus = eventBus;
         dispatch = new StandardDispatchAsync(new DefaultExceptionHandler());
         initWidget(binder.createAndBindUi(this));
         navBar = new NavBar(this);
 
         initTable();
-        update();
-    }
-
-    /**
-     * Sets the listener that will be notified when an item is selected.
-     */
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
     }
 
     @Override
@@ -105,7 +91,7 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
         } else {
             styleRow(selectedRow, false);
             selectedRow = -1;
-            update();
+            this.eventBus.fireEvent(new PageChangedEvent(PageChangedEvent.PageChangeType.NEXT));
         }
     }
 
@@ -117,8 +103,22 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
         } else {
             styleRow(selectedRow, false);
             selectedRow = -1;
-            update();
+            this.eventBus.fireEvent(new PageChangedEvent(PageChangedEvent.PageChangeType.PREVIOUS));
         }
+    }
+
+    void first() {
+        pageIndex = 0;
+        styleRow(selectedRow, false);
+        selectedRow = -1;
+        this.eventBus.fireEvent(new PageChangedEvent(PageChangedEvent.PageChangeType.FIRST));
+    }
+
+    void last() {
+        pageIndex = (int ) (totalHits/PAGE_SIZE);
+        styleRow(selectedRow, false);
+        selectedRow = -1;
+        this.eventBus.fireEvent(new PageChangedEvent(PageChangedEvent.PageChangeType.LAST));
     }
 
     @UiHandler("table")
@@ -179,14 +179,8 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
         styleRow(selectedRow, false);
         styleRow(row, true);
-
         selectedRow = row;
-
-        if (listener != null) {
-            listener.onItemSelected(item);
-        }
-
-        // presenter.onGeonameSelected(new GeonameSelectedEvent(item));
+        this.eventBus.fireEvent(new GeonameSelectedEvent(item));
     }
 
     private void styleRow(int row, boolean selected) {
@@ -202,43 +196,28 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     }
 
     public void update() {
-        AsyncCallback<GeonameListResult> callback = new AsyncCallback<GeonameListResult>() {
-
-            public void onSuccess(GeonameListResult result) {
-                // Update the older/newer buttons & label.
-                totalHits = result.getTotalHits();
-                long max = pageIndex + PAGE_SIZE;
-                if (max > totalHits) {
-                    max = totalHits;
-                }
-
-                // Update the nav bar.
-                navBar.update(pageIndex, totalHits, max);
-
-                int i = 0;
-                currentList = result.getList();
-                for (GeonameDto geonameDto : currentList) {
-                    if (i % 2 != 0) {
-                        table.getRowFormatter().addStyleName(i, selectionStyle.alternateRow());
-                    }
-                    table.setText(i, 0, Integer.toString(geonameDto.getGeonameId()));
-                    table.setText(i, 1, geonameDto.getName());
-                    table.setText(i, 2, geonameDto.getCountryCode());
-                    table.setText(i, 3, Double.toString(geonameDto.getLongitude()));
-                    table.setText(i, 4, Double.toString(geonameDto.getLatitude()));
-                    i++;
-                }
-                // Clear any remaining slots.
-                for (; i < PAGE_SIZE; ++i) {
-                    table.removeRow(table.getRowCount() - 1);
-                }
+        long max = pageIndex + PAGE_SIZE;
+        if (max > totalHits) {
+            max = totalHits;
+        }
+        // Update the nav bar.
+        navBar.update(pageIndex, totalHits, max);
+        int i = 0;
+        for (GeonameDto geonameDto : currentList) {
+            if (i % 2 != 0) {
+                table.getRowFormatter().addStyleName(i, selectionStyle.alternateRow());
             }
-
-            public void onFailure(Throwable caught) {
-                Window.alert(caught.toString());
-            }
-        };
-        dispatch.execute(new GeonameListAction(pageIndex, PAGE_SIZE), callback);
+            table.setText(i, 0, Integer.toString(geonameDto.getGeonameId()));
+            table.setText(i, 1, geonameDto.getName());
+            table.setText(i, 2, geonameDto.getCountryCode());
+            table.setText(i, 3, Double.toString(geonameDto.getLongitude()));
+            table.setText(i, 4, Double.toString(geonameDto.getLatitude()));
+            i++;
+        }
+        // Clear any remaining slots.
+        for (; i < PAGE_SIZE; ++i) {
+            table.removeRow(table.getRowCount() - 1);
+        }
     }
 
     public void setPresenter(Presenter presenter) {
@@ -249,11 +228,19 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
         return currentList;
     }
 
+    public void setCurrentList(ArrayList<GeonameDto> list) {
+        this.currentList = list;
+    }
+
     public void setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
     }
 
     public int getPageIndex() {
         return this.pageIndex;
+    }
+
+    public void setTotalHits(long totalHits) {
+        this.totalHits = totalHits;
     }
 }

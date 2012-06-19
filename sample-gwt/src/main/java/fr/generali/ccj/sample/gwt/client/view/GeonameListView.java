@@ -13,7 +13,13 @@ public interface GeonameListView extends IsWidget {
 
     void setPageIndex(int pageIndex);
 
+    int getPageIndex();
+
+    void setTotalHits(long totalHits);
+
     ArrayList<GeonameDto> getCurrentList();
+
+    void setCurrentList(ArrayList<GeonameDto> list);
 
     void update();
 

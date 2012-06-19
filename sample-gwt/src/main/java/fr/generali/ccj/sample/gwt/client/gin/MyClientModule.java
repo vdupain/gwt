@@ -3,6 +3,7 @@ package fr.generali.ccj.sample.gwt.client.gin;
 import net.customware.gwt.dispatch.client.DefaultExceptionHandler;
 import net.customware.gwt.dispatch.client.DispatchAsync;
 import net.customware.gwt.dispatch.client.secure.CookieSecureSessionAccessor;
+import net.customware.gwt.dispatch.client.standard.StandardDispatchAsync;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Provides;
@@ -27,7 +28,9 @@ public class MyClientModule extends AbstractGinModule {
     @Provides
     @Singleton
     DispatchAsync provideDispatchAsync() {
-        return new MySecureDispatchAsync(new DefaultExceptionHandler(), new DispatchUrlBuilder(),
-                        new CookieSecureSessionAccessor("JSESSIONID"));
+       return new StandardDispatchAsync(new DefaultExceptionHandler());
+//
+//        return new MySecureDispatchAsync(new DefaultExceptionHandler(), new DispatchUrlBuilder(),
+//                        new CookieSecureSessionAccessor("JSESSIONID"));
     }
 }
