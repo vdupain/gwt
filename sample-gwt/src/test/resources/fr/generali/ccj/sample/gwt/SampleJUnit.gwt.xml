@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module>
-  <!-- Inherit our applications main module.                      -->
-  <inherits name='fr.generali.ccj.sample.gwt.Sample' />
-
-  <!-- Specify the path to any remote services.                   -->
-  <servlet path="/Sample/greet" class="fr.generali.ccj.sample.gwt.server.GreetingServiceImpl" />
-
-</module>

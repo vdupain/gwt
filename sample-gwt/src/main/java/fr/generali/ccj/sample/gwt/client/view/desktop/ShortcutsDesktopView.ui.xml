@@ -3,8 +3,8 @@
 
   <g:StackLayoutPanel unit='EM'>
     <g:stack>
-      <g:header size='3'>Countries</g:header>
-      <sample:Countries ui:field='countries' />
+      <g:header size='3'>Geoname</g:header>
+      <sample:Geoname ui:field='geoname' />
     </g:stack>
 
     <g:stack>

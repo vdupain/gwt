@@ -46,6 +46,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.maps.gwt</groupId>
+      <artifactId>gwt-maps</artifactId>
+      <version>3.8.0</version>
+    </dependency>
+    
+    <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
       <version>${gwt.version}</version>

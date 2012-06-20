@@ -8,16 +8,10 @@
   </ui:style>
 
   <g:HTMLPanel>
-    <g:Anchor styleName='{style.anchor}' ui:field='firstButton' href='javascript:;'>
-      &lt;&lt;
-    </g:Anchor>
-    <g:Anchor styleName='{style.anchor}' ui:field='newerButton' href='javascript:;'>
-      &lt; newer
-    </g:Anchor>
+    <g:Anchor styleName='{style.anchor}' ui:field='firstButton' href='javascript:;'>&lt;&lt;</g:Anchor>
+    <g:Anchor styleName='{style.anchor}' ui:field='newerButton' href='javascript:;'>&lt;</g:Anchor>
     <span ui:field='countLabel' />
-    <g:Anchor styleName='{style.anchor}' ui:field='olderButton' href='javascript:;'>
-      older &gt; </g:Anchor>
-    <g:Anchor styleName='{style.anchor}' ui:field='lastButton' href='javascript:;'>
-      &gt;&gt; </g:Anchor>
+    <g:Anchor styleName='{style.anchor}' ui:field='olderButton' href='javascript:;'>&gt;</g:Anchor>
+    <g:Anchor styleName='{style.anchor}' ui:field='lastButton' href='javascript:;'>&gt;&gt;</g:Anchor>
   </g:HTMLPanel>
 </ui:UiBinder>

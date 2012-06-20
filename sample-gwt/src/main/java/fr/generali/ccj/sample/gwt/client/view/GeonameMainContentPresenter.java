@@ -17,15 +17,17 @@ import com.google.inject.Singleton;
 
 import fr.generali.ccj.sample.gwt.client.event.GeonameSelectedEvent;
 import fr.generali.ccj.sample.gwt.client.event.PageChangedEvent;
+import fr.generali.ccj.sample.gwt.client.event.SearchEvent;
 import fr.generali.ccj.sample.gwt.client.view.GeonameMainContentView.Presenter;
 import fr.generali.ccj.sample.gwt.client.view.desktop.GeonameListDesktopView;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListAction;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListResult;
+import fr.generali.ccj.sample.gwt.shared.dispatch.SearchAction;
 import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
 @Singleton
 public class GeonameMainContentPresenter extends AbstractActivity implements Presenter, GeonameSelectedEvent.Handler,
-                PageChangedEvent.Handler, AsyncCallback<GeonameListResult> {
+                PageChangedEvent.Handler, AsyncCallback<GeonameListResult>, SearchEvent.Handler {
 
     private final PlaceController placeController;
 
@@ -67,6 +69,8 @@ public class GeonameMainContentPresenter extends AbstractActivity implements Pre
                         eventBus.addHandler(GeonameSelectedEvent.TYPE, (GeonameSelectedEvent.Handler ) this);
         handlerRegistrations.add(handlerRegistration);
         handlerRegistration = eventBus.addHandler(PageChangedEvent.TYPE, (PageChangedEvent.Handler ) this);
+        handlerRegistrations.add(handlerRegistration);
+        handlerRegistration = eventBus.addHandler(SearchEvent.TYPE, (SearchEvent.Handler ) this);
         handlerRegistrations.add(handlerRegistration);
         view.setPresenter(this);
         panel.setWidget(view.asWidget());
@@ -137,6 +141,10 @@ public class GeonameMainContentPresenter extends AbstractActivity implements Pre
 
     public void onGeonameSelected(GeonameSelectedEvent event) {
         goTo(new GeonameMainContentPlace(geonameListView.getPageIndex() + "_" + event.getItem().getGeonameId()));
+    }
+
+    public void onSearch(SearchEvent event) {
+        dispatch.execute(new SearchAction(), this );
     }
 
 }

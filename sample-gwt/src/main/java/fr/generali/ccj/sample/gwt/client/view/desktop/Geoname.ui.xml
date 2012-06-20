@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+  <ui:style>
+    .important {
+    	font-weight: bold;
+    }
+  </ui:style>
+  <g:VerticalPanel>
+    <g:Label>Distance</g:Label>
+    <g:CheckBox text="0 à 100 km" ui:field="distance0a100" />
+    <g:CheckBox text="100 à 500 km" ui:field="distance100a500" />
+    <g:CheckBox text="> 500 km" ui:field="distance500" />
+    <g:Label>Population</g:Label>
+    <g:CheckBox text="0 à 1000" ui:field="population0a1000" />
+    <g:CheckBox text="1000 à 10000" ui:field="population1000a10000" />
+    <g:CheckBox text="10000 à 100000" ui:field="population10000a100000" />
+    <g:CheckBox text="100000 à 1000000" ui:field="population100000a100000" />
+    <g:CheckBox text="> 1000000" ui:field="population1000000" />
+    <g:Button ui:field="searchButton">Rechercher</g:Button>
+  </g:VerticalPanel>
+</ui:UiBinder> 

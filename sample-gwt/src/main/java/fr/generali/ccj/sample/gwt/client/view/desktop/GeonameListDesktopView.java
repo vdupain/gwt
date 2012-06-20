@@ -2,10 +2,6 @@ package fr.generali.ccj.sample.gwt.client.view.desktop;
 
 import java.util.ArrayList;
 
-import net.customware.gwt.dispatch.client.DefaultExceptionHandler;
-import net.customware.gwt.dispatch.client.DispatchAsync;
-import net.customware.gwt.dispatch.client.standard.StandardDispatchAsync;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.EventBus;
@@ -57,8 +53,6 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
 
     private NavBar navBar;
 
-    private DispatchAsync dispatch;
-
     private Presenter presenter;
 
     private long totalHits = 0;
@@ -68,7 +62,6 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     @Inject
     public GeonameListDesktopView(EventBus eventBus) {
         this.eventBus = eventBus;
-        dispatch = new StandardDispatchAsync(new DefaultExceptionHandler());
         initWidget(binder.createAndBindUi(this));
         navBar = new NavBar(this);
 
@@ -115,7 +108,7 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
     }
 
     void last() {
-        pageIndex = (int ) (totalHits/PAGE_SIZE);
+        pageIndex = (int ) (totalHits / PAGE_SIZE);
         styleRow(selectedRow, false);
         selectedRow = -1;
         this.eventBus.fireEvent(new PageChangedEvent(PageChangedEvent.PageChangeType.LAST));
@@ -202,6 +195,7 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
         }
         // Update the nav bar.
         navBar.update(pageIndex, totalHits, max);
+        table.removeAllRows();
         int i = 0;
         for (GeonameDto geonameDto : currentList) {
             if (i % 2 != 0) {
@@ -214,10 +208,10 @@ public class GeonameListDesktopView extends ResizeComposite implements GeonameLi
             table.setText(i, 4, Double.toString(geonameDto.getLatitude()));
             i++;
         }
-        // Clear any remaining slots.
-        for (; i < PAGE_SIZE; ++i) {
-            table.removeRow(table.getRowCount() - 1);
-        }
+        // // Clear any remaining slots.
+        // for (; i < PAGE_SIZE; ++i) {
+        // table.removeRow(table.getRowCount() - 1);
+        // }
     }
 
     public void setPresenter(Presenter presenter) {

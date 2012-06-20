@@ -5,6 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
@@ -15,18 +16,15 @@ public class ShortcutsDesktopView extends ResizeComposite {
 
     private static final Binder binder = GWT.create(Binder.class);
 
-    @UiField
-    Countries countries;
+    @UiField(provided = true)
+    Geoname geoname;
 
     @UiField
     GeoDistance geodistance;
 
-    /**
-     * Constructs a new shortcutsDesktopView widget using the specified images.
-     * 
-     * @param images a bundle that provides the images for this widget
-     */
-    public ShortcutsDesktopView() {
+    @Inject
+    public ShortcutsDesktopView(Geoname geoname) {
+        this.geoname = geoname;
         initWidget(binder.createAndBindUi(this));
     }
 }
