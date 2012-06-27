@@ -38,7 +38,7 @@ public class MvpModule extends AbstractGinModule {
     public PlaceHistoryHandler getHistoryHandler(PlaceController placeController, PlaceHistoryMapper historyMapper,
                     EventBus eventBus) {
         PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
-        historyHandler.register(placeController, eventBus, new GeonameMainContentPlace("0_0"));
+        historyHandler.register(placeController, eventBus, new GeonameMainContentPlace(""));
         return historyHandler;
     }
 

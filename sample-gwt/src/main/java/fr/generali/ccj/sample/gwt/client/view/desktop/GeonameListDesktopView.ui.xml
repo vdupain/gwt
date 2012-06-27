@@ -1,4 +1,5 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui'
+  xmlns:c='urn:import:com.google.gwt.user.cellview.client'
   xmlns:sample='urn:import:fr.generali.ccj.sample.gwt.client.view.desktop'>
 
   <ui:image field='gradient' src='gradient_bg_dark.png' repeatStyle='Horizontal' />
@@ -39,7 +40,7 @@
     }
   </ui:style>
 
-  <ui:style field='selectionStyle' type='fr.generali.ccj.sample.gwt.client.view.desktop.GeonameListDesktopView.SelectionStyle'>
+<!--   <ui:style field='selectionStyle' type='fr.generali.ccj.sample.gwt.client.view.desktop.GeonameListDesktopView.SelectionStyle'>
     .selectedRow {
     	background: #adcce7;
     }
@@ -53,16 +54,15 @@
     	border-bottom: 1px solid #7b97d0;
     }
   </ui:style>
-
+ -->
   <g:DockLayoutPanel unit='EM'>
-    <g:north size='2'>
-      <g:FlexTable ui:field='header' styleName='{style.header}' cellSpacing='0' cellPadding='0' />
-    </g:north>
-
     <g:center>
       <g:ScrollPanel>
-        <g:FlexTable ui:field='table' styleName='{style.table}' cellSpacing='0' cellPadding='0' />
+        <c:CellTable ui:field='table' styleName='{style.table}'/>
       </g:ScrollPanel>
     </g:center>
+    <g:south size="2">
+        <c:SimplePager ui:field='pager' pageSize="20" location='CENTER'/>
+    </g:south>
   </g:DockLayoutPanel>
 </ui:UiBinder>

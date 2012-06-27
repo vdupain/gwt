@@ -7,16 +7,9 @@
     }
   </ui:style>
   <g:VerticalPanel>
-    <g:Label>Distance</g:Label>
-    <g:CheckBox text="0 à 100 km" ui:field="distance0a100" />
-    <g:CheckBox text="100 à 500 km" ui:field="distance100a500" />
-    <g:CheckBox text="> 500 km" ui:field="distance500" />
-    <g:Label>Population</g:Label>
-    <g:CheckBox text="0 à 1000" ui:field="population0a1000" />
-    <g:CheckBox text="1000 à 10000" ui:field="population1000a10000" />
-    <g:CheckBox text="10000 à 100000" ui:field="population10000a100000" />
-    <g:CheckBox text="100000 à 1000000" ui:field="population100000a100000" />
-    <g:CheckBox text="> 1000000" ui:field="population1000000" />
-    <g:Button ui:field="searchButton">Rechercher</g:Button>
+  <g:TextBox ui:field="autocomplete"></g:TextBox>
+  <g:VerticalPanel ui:field="facetsPanel">
+  </g:VerticalPanel>
+  <g:Button ui:field="searchButton">Search</g:Button>
   </g:VerticalPanel>
 </ui:UiBinder> 

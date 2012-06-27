@@ -61,18 +61,18 @@ public class GeonameDetailDesktopView extends ResizeComposite implements Geoname
         });
 
      // Construct the circle for each value in citymap. Scale population by 20.
-        CircleOptions populationOptions = CircleOptions.create();
-        populationOptions.setStrokeColor("#ff0000");
-        populationOptions.setStrokeOpacity(0.8);
-        populationOptions.setStrokeWeight(2);
-        populationOptions.setFillColor("#ff0000");
-        populationOptions.setFillOpacity(0.35);
-        populationOptions.setMap(map);
-        final LatLng center = LatLng.create(40.0, -70.0);
-        populationOptions.setCenter(myLatLng);
-        populationOptions.setRadius(geonameDto.getPopulation() / 20);
-        //populationOptions.setRadius(100*1000);
-        Circle.create(populationOptions);
+//        CircleOptions populationOptions = CircleOptions.create();
+//        populationOptions.setStrokeColor("#ff0000");
+//        populationOptions.setStrokeOpacity(0.8);
+//        populationOptions.setStrokeWeight(2);
+//        populationOptions.setFillColor("#ff0000");
+//        populationOptions.setFillOpacity(0.35);
+//        populationOptions.setMap(map);
+//        final LatLng center = LatLng.create(40.0, -70.0);
+//        populationOptions.setCenter(myLatLng);
+//        populationOptions.setRadius(geonameDto.getPopulation() / 20);
+//        //populationOptions.setRadius(100*1000);
+//        Circle.create(populationOptions);
     }
 
     public void setPresenter(Presenter presenter) {

@@ -1,0 +1,2 @@
+serviceClass: net.customware.gwt.dispatch.client.secure.SecureDispatchService
+path: C0EB8B67DDE27FC64CA8FDE0D1A95078.gwt.rpc

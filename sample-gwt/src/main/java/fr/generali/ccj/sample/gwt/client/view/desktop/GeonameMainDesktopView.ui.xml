@@ -8,7 +8,7 @@
 
     <g:center size='200'>
       <g:SplitLayoutPanel>      
-        <g:west size='192'>
+        <g:west size='240'>
           <sample:ShortcutsDesktopView ui:field='shortcutsDesktopView' />
         </g:west>
         <g:center>

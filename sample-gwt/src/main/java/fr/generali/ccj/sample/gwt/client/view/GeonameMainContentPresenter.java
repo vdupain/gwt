@@ -1,6 +1,7 @@
 package fr.generali.ccj.sample.gwt.client.view;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import net.customware.gwt.dispatch.client.DispatchAsync;
 
@@ -12,6 +13,7 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.view.client.HasData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -20,9 +22,9 @@ import fr.generali.ccj.sample.gwt.client.event.PageChangedEvent;
 import fr.generali.ccj.sample.gwt.client.event.SearchEvent;
 import fr.generali.ccj.sample.gwt.client.view.GeonameMainContentView.Presenter;
 import fr.generali.ccj.sample.gwt.client.view.desktop.GeonameListDesktopView;
-import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListAction;
 import fr.generali.ccj.sample.gwt.shared.dispatch.GeonameListResult;
 import fr.generali.ccj.sample.gwt.shared.dispatch.SearchAction;
+import fr.generali.ccj.sample.gwt.shared.dto.FacetsDto;
 import fr.generali.ccj.sample.gwt.shared.dto.GeonameDto;
 
 @Singleton
@@ -41,7 +43,7 @@ public class GeonameMainContentPresenter extends AbstractActivity implements Pre
 
     private final DispatchAsync dispatch;
 
-    private String geonameId;
+    private FacetsDto facets;
 
     @Inject
     public GeonameMainContentPresenter(GeonameMainContentView geonameMainView, GeonameListView geonameListView,
@@ -90,30 +92,34 @@ public class GeonameMainContentPresenter extends AbstractActivity implements Pre
     }
 
     public GeonameMainContentPresenter withPlace(GeonameMainContentPlace place) {
-        if ("".equals(place.getToken()))
-            return this;
-        String sPageIndex = place.getToken().substring(0, place.getToken().indexOf("_"));
-        String sGeonameId = place.getToken().substring(place.getToken().indexOf("_") + 1, place.getToken().length());
-        int pageIndex = Integer.valueOf(sPageIndex);
-        update(pageIndex, sGeonameId);
+        // if ("".equals(place.getToken()))
+        // return this;
+        // String sPageIndex = place.getToken().substring(0,
+        // place.getToken().indexOf("_"));
+        // String sGeonameId =
+        // place.getToken().substring(place.getToken().indexOf("_") + 1,
+        // place.getToken().length());
+        // int pageIndex = Integer.valueOf(sPageIndex);
+        // update(pageIndex, sGeonameId);
         return this;
     }
 
-    private void update(int pageIndex, final String geonameId) {
-        this.geonameId = geonameId;
-        geonameListView.setPageIndex(pageIndex);
-        dispatch.execute(new GeonameListAction(geonameListView.getPageIndex(), GeonameListDesktopView.PAGE_SIZE), this);
+    private void update(int pageIndex) {
+        SearchAction action = new SearchAction(facets);
+        action.setFrom(geonameListView.getPageIndex());
+        action.setSize(GeonameListDesktopView.PAGE_SIZE);
+        dispatch.execute(action, this);
     }
 
     public void onPageChanged(PageChangedEvent event) {
         if (event.getPageChangeType().equals(PageChangedEvent.PageChangeType.FIRST)) {
-            update(geonameListView.getPageIndex(), null);
+            update(geonameListView.getPageIndex());
         } else if (event.getPageChangeType().equals(PageChangedEvent.PageChangeType.PREVIOUS)) {
-            update(geonameListView.getPageIndex(), null);
+            update(geonameListView.getPageIndex());
         } else if (event.getPageChangeType().equals(PageChangedEvent.PageChangeType.NEXT)) {
-            update(geonameListView.getPageIndex(), null);
+            update(geonameListView.getPageIndex());
         } else if (event.getPageChangeType().equals(PageChangedEvent.PageChangeType.LAST)) {
-            update(geonameListView.getPageIndex(), null);
+            update(geonameListView.getPageIndex());
         }
 
     }
@@ -123,28 +129,43 @@ public class GeonameMainContentPresenter extends AbstractActivity implements Pre
     }
 
     public void onSuccess(GeonameListResult result) {
-        ArrayList<GeonameDto> list = result.getList();
         geonameListView.setTotalHits(result.getTotalHits());
-        geonameListView.setCurrentList(list);
+        geonameListView.setCurrentList(result.getList());
         geonameListView.update();
-        updateSelectedItem(geonameId);
     }
 
     private void updateSelectedItem(final String sGeonameId) {
-        for (GeonameDto geonameDto : geonameListView.getCurrentList()) {
-            if (Integer.toString(geonameDto.getGeonameId()).equals(sGeonameId)) {
-                geonameDetailView.setGeonameDto(geonameDto);
-                break;
+        Set<HasData<GeonameDto>> dataDisplays = geonameListView.getDataProvider().getDataDisplays();
+        for (HasData<GeonameDto> hasData : dataDisplays) {
+            Iterable<GeonameDto> visibleItems = hasData.getVisibleItems();
+            for (GeonameDto geonameDto : visibleItems) {
+                if (Integer.toString(geonameDto.getGeonameId()).equals(sGeonameId)) {
+                    geonameDetailView.setGeonameDto(geonameDto);
+                    break;
+                }
             }
         }
     }
 
     public void onGeonameSelected(GeonameSelectedEvent event) {
-        goTo(new GeonameMainContentPlace(geonameListView.getPageIndex() + "_" + event.getItem().getGeonameId()));
+        updateSelectedItem("" + event.getItem().getGeonameId());
     }
 
     public void onSearch(SearchEvent event) {
-        dispatch.execute(new SearchAction(), this );
+        SearchAction action = new SearchAction();
+        if (event.getSearchType().equals(SearchEvent.SearchType.FACETS)) {
+            facets = event.getFacets();
+            action = new SearchAction(facets);
+            action.setFrom(0);
+            action.setSize(GeonameListDesktopView.PAGE_SIZE);
+        } else if (event.getSearchType().equals(SearchEvent.SearchType.AUTOCOMPLETE)) {
+            facets = null;
+            action = new SearchAction(event.getPattern());
+            action.setFrom(0);
+            action.setSize(GeonameListDesktopView.PAGE_SIZE);
+        }
+        geonameListView.setAction(action);
+        dispatch.execute(action, this);
     }
 
 }
