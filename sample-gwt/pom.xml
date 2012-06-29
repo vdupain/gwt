@@ -24,7 +24,7 @@
     <version.frk.spring-security>3.1.0.RELEASE</version.frk.spring-security>
     <version.frk.slf4j>1.6.1</version.frk.slf4j>
     <version.frk.logback>0.9.28</version.frk.logback>
-    <version.frk.elasticsearch>0.19.6</version.frk.elasticsearch>
+    <version.frk.elasticsearch>0.19.7</version.frk.elasticsearch>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
